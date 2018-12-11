@@ -30,6 +30,12 @@
         <activity android:name="com.applovin.adview.AppLovinInterstitialActivity" android:configChanges="orientation|screenSize"/>
         <activity android:name="com.applovin.adview.AppLovinConfirmationActivity" android:configChanges="orientation|screenSize"/>
 
+        <meta-data
+
+            android:name="applovin.sdk.verbose_logging"
+
+            android:value="true" />
+
     </application>
 
 

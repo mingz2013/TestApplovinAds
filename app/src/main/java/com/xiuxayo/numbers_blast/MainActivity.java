@@ -99,7 +99,12 @@ public class MainActivity extends AppCompatActivity
 
 //                interstitialAd.show();
 //                interstitialAd.showAndRender(loadedAd);
-                interstitialAd.showAndRender(currentAd);
+                if(currentAd != null){
+                    interstitialAd.showAndRender(currentAd);
+                }else{
+                    log("currentAd is null....");
+                }
+
             }
         });
 
