@@ -17,8 +17,7 @@ import com.applovin.sdk.AppLovinSdk;
 import com.applovin.sdk.AppLovinAdSize;
 
 public class MainActivity extends AppCompatActivity
-        implements AppLovinAdLoadListener, AppLovinAdDisplayListener, AppLovinAdClickListener, AppLovinAdVideoPlaybackListener
-{
+        implements AppLovinAdLoadListener, AppLovinAdDisplayListener, AppLovinAdClickListener, AppLovinAdVideoPlaybackListener {
 
 
     private AppLovinInterstitialAdDialog interstitialAd;
@@ -26,12 +25,11 @@ public class MainActivity extends AppCompatActivity
     private Button loadingButton;
 
     private AppLovinAd loadedAd;
-    private AppLovinAd                   currentAd;
+    private AppLovinAd currentAd;
 
     String TAG = "MainActivity";
 
-    protected void log(final String message)
-    {
+    protected void log(final String message) {
 //        if ( adStatusTextView != null )
 //        {
 //            runOnUiThread( new Runnable()
@@ -52,159 +50,117 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AppLovinSdk.initializeSdk(getApplicationContext());
-        AppLovinSdk.getInstance( getApplicationContext() ).getSettings().setTestAdsEnabled( true );
+        AppLovinSdk.initializeSdk(MainActivity.this);
+//        AppLovinSdk.getInstance( MainActivity.this ).getSettings().setTestAdsEnabled( true );
 
 
-
-        interstitialAd = AppLovinInterstitialAd.create( AppLovinSdk.getInstance( this ), this );
-
+        interstitialAd = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(this), this);
 
         loadingButton = (Button) findViewById(R.id.loadingbutton);
-
-
         loadingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                log( "Interstitial loading..." );
-                showButton.setEnabled( false );
+                log("Interstitial loading...");
+                showButton.setEnabled(false);
 
 
-                AppLovinSdk.getInstance( getApplicationContext() ).getAdService().loadNextAd( AppLovinAdSize.INTERSTITIAL, new AppLovinAdLoadListener()
-                {
+                AppLovinSdk.getInstance(MainActivity.this).getAdService().loadNextAd(AppLovinAdSize.INTERSTITIAL, new AppLovinAdLoadListener() {
                     @Override
-                    public void adReceived(AppLovinAd ad)
-                    {
-                        log( "Interstitial Loaded" );
+                    public void adReceived(AppLovinAd ad) {
+                        log("Interstitial Loaded");
 
                         currentAd = ad;
 
-                        runOnUiThread( new Runnable()
-                        {
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void run()
-                            {
-                                showButton.setEnabled( true );
+                            public void run() {
+                                showButton.setEnabled(true);
                             }
-                        } );
+                        });
                     }
 
                     @Override
-                    public void failedToReceiveAd(int errorCode)
-                    {
+                    public void failedToReceiveAd(int errorCode) {
                         // Look at AppLovinErrorCodes.java for list of error codes
-                        log( "Interstitial failed to load with error code " + errorCode );
+                        log("Interstitial failed to load with error code " + errorCode);
                     }
-                } );
+                });
             }
         });
-//        // Load an Interstitial Ad
-//        AppLovinSdk.getInstance( this ).getAdService().loadNextAd( AppLovinAdSize.INTERSTITIAL, new AppLovinAdLoadListener()
-//        {
-//            @Override
-//            public void adReceived(AppLovinAd ad)
-//            {
-//                loadedAd = ad;
-//            }
-//
-//            @Override
-//            public void failedToReceiveAd(int errorCode)
-//            {
-//                // Look at AppLovinErrorCodes.java for list of error codes.
-//            }
-//        } );
 
 
-
-
-        showButton = (Button) findViewById( R.id.showbutton );
-        showButton.setOnClickListener( new View.OnClickListener()
-        {
+        showButton = (Button) findViewById(R.id.showbutton);
+        showButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                showButton.setEnabled( false );
+            public void onClick(View v) {
+                showButton.setEnabled(false);
 
-                log( "Showing..." );
-
-                //
-                // Optional: Set ad load, ad display, ad click, and ad video playback callback listeners
-                //
+                log("Showing...");
 
 //                interstitialAd.show();
 //                interstitialAd.showAndRender(loadedAd);
-                interstitialAd.showAndRender( currentAd );
+                interstitialAd.showAndRender(currentAd);
             }
-        } );
+        });
 
 
         //                interstitialAd.setAdLoadListener( MainActivity.this );
-        interstitialAd.setAdDisplayListener( MainActivity.this );
-        interstitialAd.setAdClickListener( MainActivity.this );
-        interstitialAd.setAdVideoPlaybackListener( MainActivity.this ); // This will only ever be used if you have video ads enabled.
-
-
+        interstitialAd.setAdDisplayListener(MainActivity.this);
+        interstitialAd.setAdClickListener(MainActivity.this);
+        interstitialAd.setAdVideoPlaybackListener(MainActivity.this); // This will only ever be used if you have video ads enabled.
 
 
     }
-
 
 
     //
     // Ad Load Listener
     //
     @Override
-    public void adReceived(AppLovinAd appLovinAd)
-    {
-        log( "Interstitial loaded" );
-        showButton.setEnabled( true );
+    public void adReceived(AppLovinAd appLovinAd) {
+        log("Interstitial loaded");
+        showButton.setEnabled(true);
     }
 
     @Override
-    public void failedToReceiveAd(int errorCode)
-    {
+    public void failedToReceiveAd(int errorCode) {
         // Look at AppLovinErrorCodes.java for list of error codes
-        log( "Interstitial failed to load with error code " + errorCode );
+        log("Interstitial failed to load with error code " + errorCode);
 
-        showButton.setEnabled( true );
+        showButton.setEnabled(true);
     }
 
     //
     // Ad Display Listener
     //
     @Override
-    public void adDisplayed(AppLovinAd appLovinAd)
-    {
-        log( "Interstitial Displayed" );
+    public void adDisplayed(AppLovinAd appLovinAd) {
+        log("Interstitial Displayed");
     }
 
     @Override
-    public void adHidden(AppLovinAd appLovinAd)
-    {
-        log( "Interstitial Hidden" );
+    public void adHidden(AppLovinAd appLovinAd) {
+        log("Interstitial Hidden");
     }
 
     //
     // Ad Click Listener
     //
     @Override
-    public void adClicked(AppLovinAd appLovinAd)
-    {
-        log( "Interstitial Clicked" );
+    public void adClicked(AppLovinAd appLovinAd) {
+        log("Interstitial Clicked");
     }
 
     //
     // Ad Video Playback Listener
     //
     @Override
-    public void videoPlaybackBegan(AppLovinAd appLovinAd)
-    {
-        log( "Video Started" );
+    public void videoPlaybackBegan(AppLovinAd appLovinAd) {
+        log("Video Started");
     }
 
     @Override
-    public void videoPlaybackEnded(AppLovinAd appLovinAd, double percentViewed, boolean wasFullyViewed)
-    {
-        log( "Video Ended" );
+    public void videoPlaybackEnded(AppLovinAd appLovinAd, double percentViewed, boolean wasFullyViewed) {
+        log("Video Ended");
     }
 }
